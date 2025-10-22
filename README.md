@@ -91,6 +91,73 @@ if __name__ == "__main__":
         print(sentence)
 ```
 
+## Korean Language Example
+
+Sumy supports Korean text summarization with high-performance tokenizers. Here are complete examples using all available summarization algorithms.
+
+### Example 1: Single Topic (AI and Machine Learning)
+
+See [`korean_example_1.py`](korean_example_1.py) for a complete example that summarizes a long text about artificial intelligence and machine learning using all 7 summarization algorithms (Luhn, LSA, LexRank, TextRank, SumBasic, KL-Sum, and Reduction).
+
+**Requirements:**
+```sh
+$ pip install sumy kiwipiepy
+$ python -c "import nltk; nltk.download('punkt_tab'); nltk.download('stopwords')"
+```
+
+**Quick start:**
+```python
+# -*- coding: utf-8 -*-
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.lex_rank import LexRankSummarizer
+from sumy.nlp.stemmers import Stemmer
+from sumy.utils import get_stop_words
+
+LANGUAGE = "korean"
+SENTENCES_COUNT = 3
+
+TEXT = """
+인공지능은 컴퓨터 과학의 한 분야로서 기계가 인간과 유사한 지능을 가지도록 만드는 기술입니다.
+인공지능의 역사는 1950년대로 거슬러 올라가며, 앨런 튜링이 기계가 사고할 수 있는지에 대한 질문을 제기하면서 시작되었습니다.
+머신러닝은 인공지능의 핵심 기술 중 하나로, 데이터로부터 패턴을 학습하여 예측이나 결정을 내리는 방법입니다.
+딥러닝은 머신러닝의 한 분야로, 인공 신경망을 사용하여 복잡한 패턴을 학습합니다.
+인공지능 기술은 의료, 금융, 제조, 교통 등 다양한 산업에 혁신을 가져오고 있습니다.
+"""
+
+parser = PlaintextParser.from_string(TEXT, Tokenizer(LANGUAGE))
+stemmer = Stemmer(LANGUAGE)
+
+summarizer = LexRankSummarizer(stemmer)
+summarizer.stop_words = get_stop_words(LANGUAGE)
+
+for sentence in summarizer(parser.document, SENTENCES_COUNT):
+    print(sentence)
+```
+
+**Run the complete example:**
+```sh
+$ python korean_example_1.py
+```
+
+### Example 2: Multiple Topics (Science, Environment, Economy, Culture)
+
+See [`korean_example_2.py`](korean_example_2.py) for an example that summarizes a long text covering diverse topics including quantum computing, climate change, blockchain, Korean culture, space exploration, COVID-19, gene editing, and global economy.
+
+**Run the complete example:**
+```sh
+$ python korean_example_2.py
+```
+
+Both examples demonstrate all 7 summarization algorithms:
+1. **Luhn** - Based on word frequency and sentence significance
+2. **LSA (Latent Semantic Analysis)** - Uses matrix decomposition to find topics
+3. **LexRank** - Graph-based algorithm using sentence similarity
+4. **TextRank** - Similar to PageRank, measures sentence importance
+5. **SumBasic** - Selects sentences based on word probability
+6. **KL-Sum** - Uses KL divergence to measure sentence importance
+7. **Reduction** - Removes less important sentences iteratively
+
 ## Interesting projects using sumy
 
 I found some interesting projects while browsing the internet or sometimes people wrote me an e-mail with questions, and I was curious how they use the sumy :)
