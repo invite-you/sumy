@@ -12,3 +12,5 @@ __pycache__/
 
 # do not import jupyter notebooks for exploration
 notebooks/
+test_data/*.txt
+test_data/*.log
