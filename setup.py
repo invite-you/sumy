@@ -7,7 +7,7 @@ from setuptools import find_packages, setup
 VERSION_SUFFIX = "%d.%d" % sys.version_info[:2]
 
 
-with open("README.md") as readme:
+with open("README.md", encoding="utf-8") as readme:
     long_description = readme.read()
 
 
@@ -52,9 +52,9 @@ setup(
     extras_require={
         "LSA": ["numpy"],
         "LexRank": ["numpy"],
-        "Japanese": ["tinysegmenter"],
+        "Japanese": ["sudachipy", "sudachidict_core"],
         "Chinese": ["jieba"],
-        "Korean": ["konlpy"],
+        "Korean": ["kiwipiepy"],
         "Hebrew": ["hebrew_tokenizer"],
         "Greek": ["greek-stemmer-pos"],
         "Arabic": ["pyarabic"],
@@ -86,6 +86,7 @@ setup(
         "Natural Language :: Hebrew",
         "Natural Language :: Italian",
         "Natural Language :: Japanese",
+        "Natural Language :: Korean",
         "Natural Language :: Portuguese",
         "Natural Language :: Slovak",
         "Natural Language :: Spanish",
