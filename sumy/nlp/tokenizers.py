@@ -46,12 +46,15 @@ class JapaneseWordTokenizer:
     @staticmethod
     def tokenize(text):
         try:
-            import tinysegmenter
+            from sudachipy import Dictionary, MorphemeList
         except ImportError:
             raise ValueError(
-                "Japanese tokenizer requires tinysegmenter. Please, install it by command 'pip install tinysegmenter'."
+                "Japanese tokenizer requires SudachiPy and SudachiDict. "
+                "Please, install them by commands 'pip install sudachipy sudachidict_core'."
             )
-        return tinysegmenter.TinySegmenter().tokenize(text)
+        tokenizer = Dictionary().create()
+        morphemes = tokenizer.tokenize(text)
+        return [m.surface() for m in morphemes]
 
 
 class ChineseWordTokenizer:
@@ -68,20 +71,24 @@ class KoreanSentencesTokenizer:
     @staticmethod
     def tokenize(text):
         try:
-            from konlpy.tag import Kkma
+            from kiwipiepy import Kiwi
         except ImportError:
-            raise ValueError("Korean tokenizer requires konlpy. Please, install it by command 'pip install konlpy'.")
-        return Kkma().sentences(text)
+            raise ValueError("Korean tokenizer requires kiwipiepy. Please, install it by command 'pip install kiwipiepy'.")
+        kiwi = Kiwi()
+        return [sent.text for sent in kiwi.split_into_sents(text)]
 
 
 class KoreanWordTokenizer:
     @staticmethod
     def tokenize(text):
         try:
-            from konlpy.tag import Kkma
+            from kiwipiepy import Kiwi
         except ImportError:
-            raise ValueError("Korean tokenizer requires konlpy. Please, install it by command 'pip install konlpy'.")
-        return Kkma().nouns(text)
+            raise ValueError("Korean tokenizer requires kiwipiepy. Please, install it by command 'pip install kiwipiepy'.")
+        kiwi = Kiwi()
+        # Extract nouns similar to konlpy's Kkma().nouns()
+        tokens = kiwi.tokenize(text)
+        return [token.form for token in tokens if token.tag.startswith('N')]
 
 
 class GreekSentencesTokenizer:
